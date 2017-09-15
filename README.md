@@ -1,4 +1,4 @@
-# nsi-netdisk-ng
+# NSI-NetDisk-NG
 
 > An electron-vue project
 
