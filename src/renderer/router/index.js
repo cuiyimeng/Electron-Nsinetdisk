@@ -21,7 +21,7 @@ Vue.material.registerTheme('default', {
 
 Vue.material.registerTheme({
   myfile: {
-    primary: 'green'
+    primary: 'indigo'
   },
   about: {
     primary: 'indigo'
@@ -40,7 +40,7 @@ export default new Router({
     },
     {
       path: '/main',
-      name: 'mainPage',
+      name: 'main',
       component: main,
       children: [
         {

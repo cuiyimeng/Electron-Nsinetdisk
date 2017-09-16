@@ -46,6 +46,12 @@ app.on('activate', () => {
   }
 })
 
+// var videoList = ['rmvb','flv','mp4','wmv','asf','rm','mov','avi','mpg','mpeg']
+// var audoList = ['mp3','aac','ogg','cda','wav','mid']
+// var codeList = ['sql','c','qs','cpp','py','js','css','html','js','vue','json','xml','smail','java','o','lua','conf','cnf','php','asp','cs','vbs','ts','jar','jad','class']
+// var imageList = ['png','jpg','jpeg','bmp','gif','svg','raw','psd','ai']
+// var zipList = ['zip','rar','7z','tgz','gz','tar','cpio','bz','bz2','gzip','gunzip','cab','iso','gho']
+
 /**
  * Auto Updater
  *

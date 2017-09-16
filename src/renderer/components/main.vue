@@ -73,16 +73,17 @@
                     </md-list-item>
 
                     <md-list-item>
+                        <router-link to="/upload">
+                            <md-icon>cloud_upload </md-icon> <span>上传列表</span>
+                        </router-link>
+                    </md-list-item>
+
+                    <md-list-item>
                         <router-link to="/download">
                             <md-icon>cloud_download</md-icon> <span>下载列表</span>
                         </router-link>
                     </md-list-item>
 
-                    <md-list-item>
-                        <router-link to="/upload">
-                            <md-icon>cloud_uploamyfiled </md-icon> <span>上传列表</span>
-                        </router-link>
-                    </md-list-item>
                     <hr>
                     <md-list-item @click="about">
                             <span>About Software</span>
@@ -121,27 +122,33 @@ export default {
       loginStatus: true,
       formStatus: true,
       alert: {
-        title: '',
-        html: ''
+        title: 'NaN',
+        html: 'NaN'
       }
     }
   },
   methods: {
-    sideNav () {
-      this.$refs.leftSidenav.toggle()
-    },
     aboutme () {
       this.alert.title = 'About Me'
-      this.alert.html = 'Html'
+      this.alert.html = 'Author: AliasZet <br> BuildTime: 2017-09-15 22:10 <br> Project: https://github.com/mrlk/'
       this.openDialog()
     },
     about () {
       this.alert.title = 'About Software'
-      this.alert.html = 'testhtml'
+      this.alert.html =
+      'Electron: ' + process.versions['atom-shell'] + '<br>' +
+      'Platform: ' + require('os').platform() + '<br>' +
+      'Vue: ' + require('vue/package.json').version + '<br>' +
+      'License: ' + 'GNU General Public License V3(GPL-V3)' + '<br>' +
+      'UI: ' + 'Vue-Material ' + require('vue-material/package.json').version + '<br><br>' +
+      'Design By Google'
       this.openDialog()
     },
     // Global Functions.
     closeNavBar () {
+      this.$refs.leftSidenav.toggle()
+    },
+    sideNav () {
       this.$refs.leftSidenav.toggle()
     },
     openDialog () {
