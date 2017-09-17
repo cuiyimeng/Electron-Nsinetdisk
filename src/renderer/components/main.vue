@@ -39,7 +39,7 @@
 
                 </div>
 
-                <div class="md-toolbar-container">
+                <div class="md-toolbar-container" v-show="loginStatus">
                     <h3 class="md-title">NSI - NetDisk - NG</h3>
 
                     <md-theme md-name='main'>
@@ -76,34 +76,38 @@
                             </md-card-header>
 
                             <md-card-actions v-show="loginStatus">
-                                <md-button>注销</md-button>
+                                <md-button  @click="logout">注销</md-button>
                             </md-card-actions>
                         </md-card-area>
                     </md-card-media-cover>
                 </md-card>
                 <md-list>
                     <div v-show="loginStatus" @click="closeNavBar">
-                        <md-list-item>
-                            <router-link to="/myfile">
-                                <md-icon>home</md-icon>
-                                <span>我的文件</span>
-                            </router-link>
-                        </md-list-item>
+                        <div  @click="changeStat('yes')">
+                            <md-list-item>
+                                <router-link to="/myfile">
+                                    <md-icon>home</md-icon>
+                                    <span>我的文件</span>
+                                </router-link>
+                            </md-list-item>
+                        </div>
+                        <div @click="changeStat('no')">
+                            <md-list-item>
+                                <router-link to="/upload">
+                                    <md-icon>cloud_upload </md-icon>
+                                    <span>上传列表</span>
+                                </router-link>
+                            </md-list-item>
 
-                        <md-list-item>
-                            <router-link to="/upload">
-                                <md-icon>cloud_upload </md-icon>
-                                <span>上传列表</span>
-                            </router-link>
-                        </md-list-item>
-
-                        <md-list-item>
-                            <router-link to="/download">
-                                <md-icon>cloud_download</md-icon>
-                                <span>下载列表</span>
-                            </router-link>
-                        </md-list-item>
-
+                            <md-list-item>
+                                <router-link to="/download">
+                                    <md-icon>cloud_download</md-icon>
+                                    <span >下载列表</span>
+                                </router-link>
+                            </md-list-item>
+                        </div>
+                    </div>
+                    <div>
                         <hr>
                         <md-list-item @click="about">
                             <span>About Software</span>
@@ -199,13 +203,20 @@ export default {
     }
   },
   mounted () {
-    this.$router.push('/myfile')
+    // Login Status.
+    if (this.loginStatus) {
+      this.$router.push('/myfile')
+    } else {
+      this.formStatus = this.loginStatus
+      this.user.name = '欢迎'
+      this.$router.push('/login')
+    }
   },
   methods: {
     aboutme () {
       this.alert.title = 'About Me'
       this.alert.html = 'Author: AliasZet <br> BuildTime: 2017-09-15 22:10:11 <br> Project: https://github.com/mrlk/'
-      this.openDialog()
+      this.openDialog('dialog')
     },
     about () {
       this.alert.title = 'About Software'
@@ -232,6 +243,18 @@ export default {
     createNewFolder () {
       console.log('CreateNewFolder')
       this.closeDialog('createFolder')
+    },
+    logout () {
+      console.log('logout')
+      this.closeNavBar()
+      this.$router.go('/')
+    },
+    changeStat (stat) {
+      if (stat === 'yes') {
+        this.formStatus = true
+      } else {
+        this.formStatus = false
+      }
     },
     // Global Functions.    
     closeNavBar () {

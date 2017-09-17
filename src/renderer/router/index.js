@@ -26,8 +26,11 @@ Vue.material.registerTheme({
   myfile: {
     primary: 'indigo'
   },
-  about: {
-    primary: 'indigo'
+  download: {
+    primary: 'teal'
+  },
+  downloaded: {
+    primary: 'green'
   },
   contact: {
     primary: 'teal'
