@@ -1,110 +1,178 @@
 <template>
-<div>
-        <div>
-        <md-toolbar class="md-large">
-            <div class="md-toolbar-container">
-                <md-button class="md-icon-button" @click="sideNav">
-                    <md-icon>menu</md-icon>
-                </md-button>
-
-                <span style="flex: 1;"></span>
-
-                <md-input-container  class="search" v-show="formStatus">
-                    <md-icon>search</md-icon>
-                    <md-input placeholder='搜索'></md-input>
-                </md-input-container>
-
-                <md-menu md-size="4">
-                    <md-button class="md-icon-button" md-menu-trigger>
-                        <md-icon>filter_list</md-icon>
+    <div>
+        <div class="title">
+            <md-toolbar class="md-large">
+                <div class="md-toolbar-container">
+                    <md-button class="md-icon-button" @click="sideNav">
+                        <md-icon>menu</md-icon>
                     </md-button>
 
-                    <md-menu-content>
-                        <md-menu-item v-show="loginStatus">
-                            <md-icon>settings</md-icon>
-                            <span>设置</span>
-                        </md-menu-item>
+                    <span style="flex: 1;"></span>
 
-                        <md-menu-item>
-                            <md-icon>keyboard_arrow_down</md-icon>
-                            <span>最小化</span>
-                        </md-menu-item>
+                    <md-input-container class="search" v-show="formStatus">
+                        <md-icon>search</md-icon>
+                        <md-input placeholder='搜索'></md-input>
+                    </md-input-container>
 
-                        <md-menu-item>
-                            <md-icon>exit_to_app</md-icon>
-                            <span>退出</span>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
+                    <md-menu md-size="4">
+                        <md-button class="md-icon-button" md-menu-trigger>
+                            <md-icon>filter_list</md-icon>
+                        </md-button>
 
-            </div>
+                        <md-menu-content>
+                            <md-menu-item v-show="loginStatus" @click="openDialog('setting')">
+                                <md-icon>settings</md-icon>
+                                <span>设置</span>
+                            </md-menu-item>
 
-            <div class="md-toolbar-container">
-                <h2 class="md-title">NSI - NetDisk - NG</h2>
-                <md-button class="md-fab md-mini" v-show="formStatus">
-                    <md-icon>add</md-icon>
-                </md-button>
-            </div>
-        </md-toolbar>
-        <md-dialog-alert :md-title="alert.title"  :md-content-html="alert.html" ref="dialog"></md-dialog-alert>
-        <md-sidenav class="md-left" ref="leftSidenav">
-            <md-card>
-                <md-card-media-cover md-text-scrim>
-                    <md-card-media md-ratio="16:9">
-                        <img src="~@/assets/background.jpg" alt="Skyscraper">
-                    </md-card-media>
-                    <md-card-area>
-                        <md-card-header>
-                            <div class="md-title"> {{ user.name }} </div>
-                        </md-card-header>
+                            <md-menu-item>
+                                <md-icon>keyboard_arrow_down</md-icon>
+                                <span>最小化</span>
+                            </md-menu-item>
 
-                        <md-card-actions v-show="loginStatus">
-                            <md-button>注销</md-button>
-                        </md-card-actions>
-                    </md-card-area>
-                </md-card-media-cover>
-            </md-card>
-            <md-list>
-                <div v-show="loginStatus" @click="closeNavBar">
-                    <md-list-item>
-                        <router-link to="/myfile">
-                            <md-icon>home</md-icon> <span>我的文件</span>
-                        </router-link>
-                    </md-list-item>
+                            <md-menu-item>
+                                <md-icon>exit_to_app</md-icon>
+                                <span>退出</span>
+                            </md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
 
-                    <md-list-item>
-                        <router-link to="/upload">
-                            <md-icon>cloud_upload </md-icon> <span>上传列表</span>
-                        </router-link>
-                    </md-list-item>
-
-                    <md-list-item>
-                        <router-link to="/download">
-                            <md-icon>cloud_download</md-icon> <span>下载列表</span>
-                        </router-link>
-                    </md-list-item>
-
-                    <hr>
-                    <md-list-item @click="about">
-                            <span>About Software</span>
-                    </md-list-item>
-                    <md-list-item @click="aboutme">
-                            <span>About Me</span>
-                    </md-list-item>
                 </div>
-                
-            </md-list>
-        </md-sidenav>
-    </div>
-        <router-view></router-view>
+
+                <div class="md-toolbar-container">
+                    <h3 class="md-title">NSI - NetDisk - NG</h3>
+
+                    <md-theme md-name='main'>
+                        <md-speed-dial md-open="hover" md-direction="right" class="md-fab md-mini" v-show="formStatus">
+                            <md-button class="md-fab md-mini" md-fab-trigger>
+                                <md-icon md-icon-morph>add</md-icon>
+                                <md-icon>add</md-icon>
+                            </md-button>
+
+                            <md-button class="md-fab md-primary md-mini md-clean">
+                                <md-icon>insert_drive_file</md-icon>
+                                <md-tooltip md-direction="bottom">上传文件</md-tooltip>
+                            </md-button>
+
+                            <md-button class="md-fab md-primary md-mini md-clean" @click="openDialog('createFolder')">
+                                <md-icon>folder</md-icon>
+                                <md-tooltip md-direction="bottom">新建文件夹</md-tooltip>
+                            </md-button>
+
+                        </md-speed-dial>
+                    </md-theme>
+                </div>
+            </md-toolbar>
+            <md-dialog-alert :md-title="alert.title" :md-content-html="alert.html" ref="dialog"></md-dialog-alert>
+            <md-sidenav class="md-left" ref="leftSidenav">
+                <md-card>
+                    <md-card-media-cover md-text-scrim>
+                        <md-card-media md-ratio="16:9">
+                            <img src="~@/assets/background.jpg" alt="Skyscraper">
+                        </md-card-media>
+                        <md-card-area>
+                            <md-card-header>
+                                <div class="md-title"> {{ user.name }} </div>
+                            </md-card-header>
+
+                            <md-card-actions v-show="loginStatus">
+                                <md-button>注销</md-button>
+                            </md-card-actions>
+                        </md-card-area>
+                    </md-card-media-cover>
+                </md-card>
+                <md-list>
+                    <div v-show="loginStatus" @click="closeNavBar">
+                        <md-list-item>
+                            <router-link to="/myfile">
+                                <md-icon>home</md-icon>
+                                <span>我的文件</span>
+                            </router-link>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <router-link to="/upload">
+                                <md-icon>cloud_upload </md-icon>
+                                <span>上传列表</span>
+                            </router-link>
+                        </md-list-item>
+
+                        <md-list-item>
+                            <router-link to="/download">
+                                <md-icon>cloud_download</md-icon>
+                                <span>下载列表</span>
+                            </router-link>
+                        </md-list-item>
+
+                        <hr>
+                        <md-list-item @click="about">
+                            <span>About Software</span>
+                        </md-list-item>
+                        <md-list-item @click="aboutme">
+                            <span>About Me</span>
+                        </md-list-item>
+                    </div>
+
+                </md-list>
+            </md-sidenav>
+            <!-- Create Folder Dialog Start -->
+
+            <md-dialog md-open-from="#fab" md-close-to="#fab" ref="createFolder">
+                <md-dialog-title>新建文件夹</md-dialog-title>
+
+                <md-dialog-content>
+                    <md-input-container>
+                        <label>新文件夹名</label>
+                        <md-textarea></md-textarea>
+                    </md-input-container>
+                </md-dialog-content>
+
+                <md-dialog-actions>
+                    <md-button class="md-primary" @click="closeDialog('createFolder')">取消</md-button>
+                    <md-button class="md-primary" @click="createNewFolder">确定</md-button>
+                </md-dialog-actions>
+            </md-dialog>
+            <!-- Create Folder Dialog End -->
+            <!-- Setting Dialog Start -->
+            <md-dialog md-open-from="#fab" md-close-to="#fab" ref="setting">
+                <md-dialog-title>设置</md-dialog-title>
+
+                <md-dialog-content  style="width: 500px">
+                    <md-layout md-gutter>
+                        <md-layout>
+                            <md-button>
+                                <md-icon @click="setDownloadPath">settings</md-icon>                             
+                            </md-button>                               
+                        </md-layout>
+                        <md-layout md-flex="75">
+                            <md-input-container>
+                                <label>下载位置</label>
+                                <md-input readonly v-model="setting.path"></md-input>
+                            </md-input-container>                         
+                        </md-layout>
+                    </md-layout>
+                                
+                </md-dialog-content>
+
+                <md-dialog-actions>
+                    <md-button class="md-primary" @click="closeDialog('setting')">取消</md-button>
+                    <md-button class="md-primary" @click="saveSetting">保存</md-button>
+                </md-dialog-actions>
+            </md-dialog>
+            <!-- Setting DiaLog End -->
+
+        </div>
+        <div>
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 
-<style lang="less">
+<style>
   .md-fab {
     margin: 0;
     position: absolute;
-    bottom: -20px;
+    bottom: -10px;
     left: 16px;
   }
   .search {
@@ -124,13 +192,19 @@ export default {
       alert: {
         title: 'NaN',
         html: 'NaN'
+      },
+      setting: {
+        path: '/'
       }
     }
+  },
+  mounted () {
+    this.$router.push('/myfile')
   },
   methods: {
     aboutme () {
       this.alert.title = 'About Me'
-      this.alert.html = 'Author: AliasZet <br> BuildTime: 2017-09-15 22:10 <br> Project: https://github.com/mrlk/'
+      this.alert.html = 'Author: AliasZet <br> BuildTime: 2017-09-15 22:10:11 <br> Project: https://github.com/mrlk/'
       this.openDialog()
     },
     about () {
@@ -141,21 +215,36 @@ export default {
       'Vue: ' + require('vue/package.json').version + '<br>' +
       'License: ' + 'GNU General Public License V3(GPL-V3)' + '<br>' +
       'UI: ' + 'Vue-Material ' + require('vue-material/package.json').version + '<br><br>' +
-      'Design By Google'
-      this.openDialog()
+      'Design By Google' + '<br>' +
+      'Thanks for OpenSource Project.'
+      this.openDialog('dialog')
     },
-    // Global Functions.
+    choseFile () {
+      console.log(1)
+    },
+    setDownloadPath () {
+      console.log('downloadPath')
+    },
+    saveSetting () {
+      console.log('SaveSetting')
+      this.closeDialog('setting')
+    },
+    createNewFolder () {
+      console.log('CreateNewFolder')
+      this.closeDialog('createFolder')
+    },
+    // Global Functions.    
     closeNavBar () {
       this.$refs.leftSidenav.toggle()
     },
     sideNav () {
       this.$refs.leftSidenav.toggle()
     },
-    openDialog () {
-      this.$refs['dialog'].open()
+    openDialog (dialog) {
+      this.$refs[dialog].open()
     },
-    closeDialog () {
-      this.$refs['dialog'].close()
+    closeDialog (dialog) {
+      this.$refs[dialog].close()
     }
   }
 }

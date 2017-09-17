@@ -20,6 +20,9 @@ Vue.material.registerTheme('default', {
 })
 
 Vue.material.registerTheme({
+  main: {
+    primary: 'grey'
+  },
   myfile: {
     primary: 'indigo'
   },
