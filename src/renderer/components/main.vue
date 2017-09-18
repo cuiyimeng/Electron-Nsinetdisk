@@ -25,12 +25,12 @@
                                 <span>设置</span>
                             </md-menu-item>
 
-                            <md-menu-item>
+                            <md-menu-item @click="minimize">
                                 <md-icon>keyboard_arrow_down</md-icon>
                                 <span>最小化</span>
                             </md-menu-item>
 
-                            <md-menu-item>
+                            <md-menu-item @click="exit">
                                 <md-icon>exit_to_app</md-icon>
                                 <span>退出</span>
                             </md-menu-item>
@@ -185,6 +185,8 @@
 </style>
 
 <script>
+const {ipcRenderer} = require('electron')
+
 export default {
   data () {
     return {
@@ -224,8 +226,8 @@ export default {
       'Electron: ' + process.versions['atom-shell'] + '<br>' +
       'Platform: ' + require('os').platform() + '<br>' +
       'Vue: ' + require('vue/package.json').version + '<br>' +
-      'License: ' + 'GNU General Public License V3(GPL-V3)' + '<br>' +
-      'UI: ' + 'Vue-Material ' + require('vue-material/package.json').version + '<br><br>' +
+      'UI: ' + 'Vue-Material ' + require('vue-material/package.json').version +
+      'License: ' + 'GNU General Public License V3(GPL-V3)' + '<br>' + '<br>' +
       'Design By Google' + '<br>' +
       'Thanks for OpenSource Project.'
       this.openDialog('dialog')
@@ -256,7 +258,13 @@ export default {
         this.formStatus = false
       }
     },
-    // Global Functions.    
+    // Global Functions.
+    minimize () {
+      ipcRenderer.send('minimize')
+    },
+    exit () {
+      ipcRenderer.sendSync('quit')
+    },
     closeNavBar () {
       this.$refs.leftSidenav.toggle()
     },

@@ -1,6 +1,6 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron'
 
 /**
  * Set `__static` path to static files in production
@@ -10,7 +10,9 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
+let tray
 let mainWindow
+
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -32,7 +34,15 @@ function createWindow () {
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  tray = new Tray(__static + '/logo.png')
+  const contextMenu = Menu.buildFromTemplate([
+    {label: '打开主面板', type: 'radio', click: () => { mainWindow.show() }},
+    {label: '退出', type: 'radio', click: () => { app.quit() }}
+  ])
+  tray.setContextMenu(contextMenu)
+})
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {
@@ -44,6 +54,14 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+ipcMain.on('quit', () => {
+  app.quit()
+})
+
+ipcMain.on('minimize', () => {
+  mainWindow.hide()
 })
 
 // var videoList = ['rmvb','flv','mp4','wmv','asf','rm','mov','avi','mpg','mpeg']
