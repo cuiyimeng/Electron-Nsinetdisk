@@ -32,8 +32,8 @@ Vue.material.registerTheme({
   downloaded: {
     primary: 'green'
   },
-  contact: {
-    primary: 'teal'
+  login: {
+    primary: 'blue'
   }
 })
 

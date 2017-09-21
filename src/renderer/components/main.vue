@@ -39,10 +39,10 @@
 
                 </div>
 
-                <div class="md-toolbar-container" v-show="loginStatus">
-                    <h3 class="md-title">NSI - NetDisk - NG</h3>
+                <div class="md-toolbar-container">
+                    <h3 class="md-title"> {{ title }}</h3>
 
-                    <md-theme md-name='main'>
+                    <md-theme md-name='main' v-show="loginStatus">
                         <md-speed-dial md-open="hover" md-direction="right" class="md-fab md-mini" v-show="formStatus">
                             <md-button class="md-fab md-mini" md-fab-trigger>
                                 <md-icon md-icon-morph>add</md-icon>
@@ -193,12 +193,13 @@ export default {
       user: {
         name: 'TestName'
       },
-      loginStatus: true,
+      loginStatus: false,
       formStatus: true,
       alert: {
         title: 'NaN',
         html: 'NaN'
       },
+      title: 'NSI - NetDisk - NG',
       setting: {
         path: '/'
       }
@@ -211,6 +212,7 @@ export default {
     } else {
       this.formStatus = this.loginStatus
       this.user.name = '欢迎'
+      this.title = '登录'
       this.$router.push('/login')
     }
   },
