@@ -3,15 +3,16 @@
         <div class="title">
             <md-toolbar class="md-large">
                 <div class="md-toolbar-container">
+                    
                     <md-button class="md-icon-button" @click="sideNav">
                         <md-icon>menu</md-icon>
                     </md-button>
 
                     <span style="flex: 1;"></span>
 
-                    <md-input-container class="search" v-show="formStatus">
+                    <md-input-container class="search" disable v-show="formStatus">
                         <md-icon>search</md-icon>
-                        <md-input placeholder='搜索'></md-input>
+                        <md-input placeholder='搜索' disabled></md-input>
                     </md-input-container>
 
                     <md-menu md-size="4">
@@ -76,14 +77,14 @@
                             </md-card-header>
 
                             <md-card-actions v-show="loginStatus">
-                                <md-button  @click="logout">注销</md-button>
+                                <md-button @click="logout">注销</md-button>
                             </md-card-actions>
                         </md-card-area>
                     </md-card-media-cover>
                 </md-card>
                 <md-list>
                     <div v-show="loginStatus" @click="closeNavBar">
-                        <div  @click="changeStat('yes')">
+                        <div @click="changeStat('yes')">
                             <md-list-item>
                                 <router-link to="/myfile">
                                     <md-icon>home</md-icon>
@@ -102,7 +103,7 @@
                             <md-list-item>
                                 <router-link to="/download">
                                     <md-icon>cloud_download</md-icon>
-                                    <span >下载列表</span>
+                                    <span>下载列表</span>
                                 </router-link>
                             </md-list-item>
                         </div>
@@ -137,25 +138,26 @@
                 </md-dialog-actions>
             </md-dialog>
             <!-- Create Folder Dialog End -->
+
             <!-- Setting Dialog Start -->
             <md-dialog md-open-from="#fab" md-close-to="#fab" ref="setting">
                 <md-dialog-title>设置</md-dialog-title>
 
-                <md-dialog-content  style="width: 500px">
+                <md-dialog-content style="width: 500px">
                     <md-layout md-gutter>
                         <md-layout>
                             <md-button>
-                                <md-icon @click="setDownloadPath">settings</md-icon>                             
-                            </md-button>                               
+                                <md-icon @click="setDownloadPath">settings</md-icon>
+                            </md-button>
                         </md-layout>
                         <md-layout md-flex="75">
                             <md-input-container>
                                 <label>下载位置</label>
                                 <md-input readonly v-model="setting.path"></md-input>
-                            </md-input-container>                         
+                            </md-input-container>
                         </md-layout>
                     </md-layout>
-                                
+
                 </md-dialog-content>
 
                 <md-dialog-actions>
@@ -166,6 +168,9 @@
             <!-- Setting DiaLog End -->
 
         </div>
+        <md-snackbar md-position="bottom left" ref="snackbar" :md-duration="4000">
+            <span>{{ info }}</span>
+        </md-snackbar>
         <div>
             <router-view></router-view>
         </div>
@@ -199,7 +204,8 @@ export default {
       },
       setting: {
         path: '/'
-      }
+      },
+      snackbar: ''
     }
   },
   mounted () {
@@ -256,7 +262,10 @@ export default {
         this.formStatus = false
       }
     },
-    // Global Functions.    
+    // Global Functions.
+    openSnackbar () {
+      this.$refs.snackbar.open()
+    },
     closeNavBar () {
       this.$refs.leftSidenav.toggle()
     },
