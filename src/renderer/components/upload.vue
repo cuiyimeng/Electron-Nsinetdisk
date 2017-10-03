@@ -84,7 +84,7 @@
 
       </md-list>
     </div>
-    <md-snackbar md-position="bottom left"  ref="snackbar" :md-duration="4000">
+    <md-snackbar md-position="bottom left"  ref="snackbar" :md-duration="1000">
       <span>已经删除上传</span>
     </md-snackbar>
     <!-- <md-dialog-alert :md-title="alert.title" :md-content-html="alert.html" ref="dialog"></md-dialog-alert> -->

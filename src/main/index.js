@@ -1,6 +1,16 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { autoUpdater } from 'electron-updater'
+import { app, BrowserWindow, ipcMain, Menu, Tray } from 'electron'
+const request = require('request').defaults({jar: true})
+
+autoUpdater.on('update-downloaded', () => {
+  autoUpdater.quitAndInstall()
+})
+
+app.on('ready', () => {
+  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
+})
 
 /**
  * Set `__static` path to static files in production
@@ -10,7 +20,9 @@ if (process.env.NODE_ENV !== 'development') {
   global.__static = require('path').join(__dirname, '/static').replace(/\\/g, '\\\\')
 }
 
+let tray
 let mainWindow
+
 const winURL = process.env.NODE_ENV === 'development'
   ? `http://localhost:9080`
   : `file://${__dirname}/index.html`
@@ -24,17 +36,24 @@ function createWindow () {
     useContentSize: true,
     width: 1000
   })
-
   mainWindow.loadURL(winURL)
-
   mainWindow.on('closed', () => {
     mainWindow = null
   })
 }
 
-app.on('ready', createWindow)
+app.on('ready', () => {
+  createWindow()
+  tray = new Tray(__static + '/logo.png')
+  const contextMenu = Menu.buildFromTemplate([
+    {label: '打开主面板', type: 'radio', click: () => { mainWindow.show() }},
+    // {label: '最小化', type: 'radio', click: () => { mainWindow.hide() }},
+    {label: '退出', type: 'radio', click: () => { app.quit() }}
+  ])
+  tray.setContextMenu(contextMenu)
+})
 
-app.on('window-all-closed', () => {
+app.on('window-all-closed', (event) => {
   if (process.platform !== 'darwin') {
     app.quit()
   }
@@ -44,6 +63,30 @@ app.on('activate', () => {
   if (mainWindow === null) {
     createWindow()
   }
+})
+
+ipcMain.on('quit', () => {
+  app.quit()
+})
+
+ipcMain.on('minimize', () => {
+  mainWindow.hide()
+})
+
+ipcMain.on('login', (name, passwd) => {
+  request({
+    methods: 'POST',
+    url: 'http://wx.nsi-soft.com:5902/sso/login.do',
+    form: {
+      requestUrl: 'http://nsi-soft.com/nsiNetdisk/',
+      name: name,
+      password: passwd
+    }
+  }, (err, res, body) => {
+    if (!err) {
+      console.log(body)
+    }
+  })
 })
 
 // var videoList = ['rmvb','flv','mp4','wmv','asf','rm','mov','avi','mpg','mpeg']
@@ -58,16 +101,4 @@ app.on('activate', () => {
  * Uncomment the following code below and install `electron-updater` to
  * support auto updating. Code Signing with a valid certificate is required.
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-builder.html#auto-updating
- */
-
-/*
-import { autoUpdater } from 'electron-updater'
-
-autoUpdater.on('update-downloaded', () => {
-  autoUpdater.quitAndInstall()
-})
-
-app.on('ready', () => {
-  if (process.env.NODE_ENV === 'production') autoUpdater.checkForUpdates()
-})
  */

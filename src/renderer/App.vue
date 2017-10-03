@@ -5,9 +5,9 @@
 </template>
 
 <script>
-  export default {
-    name: 'nsi-netdisk-ng'
-  }
+export default {
+  name: 'nsi-netdisk-ng'
+}
 </script>
 
 <style>

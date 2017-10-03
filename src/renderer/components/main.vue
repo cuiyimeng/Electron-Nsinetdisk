@@ -26,12 +26,12 @@
                                 <span>设置</span>
                             </md-menu-item>
 
-                            <md-menu-item>
+                            <md-menu-item @click="minimize">
                                 <md-icon>keyboard_arrow_down</md-icon>
                                 <span>最小化</span>
                             </md-menu-item>
 
-                            <md-menu-item>
+                            <md-menu-item @click="exit">
                                 <md-icon>exit_to_app</md-icon>
                                 <span>退出</span>
                             </md-menu-item>
@@ -40,10 +40,10 @@
 
                 </div>
 
-                <div class="md-toolbar-container" v-show="loginStatus">
-                    <h3 class="md-title">NSI - NetDisk - NG</h3>
+                <div class="md-toolbar-container">
+                    <h3 class="md-title"> {{ title }}</h3>
 
-                    <md-theme md-name='main'>
+                    <md-theme md-name='main' v-show="loginStatus">
                         <md-speed-dial md-open="hover" md-direction="right" class="md-fab md-mini" v-show="formStatus">
                             <md-button class="md-fab md-mini" md-fab-trigger>
                                 <md-icon md-icon-morph>add</md-icon>
@@ -190,18 +190,21 @@
 </style>
 
 <script>
+const {ipcRenderer} = require('electron')
+
 export default {
   data () {
     return {
       user: {
         name: 'TestName'
       },
-      loginStatus: true,
+      loginStatus: false,
       formStatus: true,
       alert: {
         title: 'NaN',
         html: 'NaN'
       },
+      title: 'NSI - NetDisk - NG',
       setting: {
         path: '/'
       },
@@ -215,6 +218,7 @@ export default {
     } else {
       this.formStatus = this.loginStatus
       this.user.name = '欢迎'
+      this.title = '登录'
       this.$router.push('/login')
     }
   },
@@ -230,8 +234,8 @@ export default {
       'Electron: ' + process.versions['atom-shell'] + '<br>' +
       'Platform: ' + require('os').platform() + '<br>' +
       'Vue: ' + require('vue/package.json').version + '<br>' +
-      'License: ' + 'GNU General Public License V3(GPL-V3)' + '<br>' +
-      'UI: ' + 'Vue-Material ' + require('vue-material/package.json').version + '<br><br>' +
+      'UI: ' + 'Vue-Material ' + require('vue-material/package.json').version +
+      'License: ' + 'GNU General Public License V3(GPL-V3)' + '<br>' + '<br>' +
       'Design By Google' + '<br>' +
       'Thanks for OpenSource Project.'
       this.openDialog('dialog')
@@ -263,8 +267,16 @@ export default {
       }
     },
     // Global Functions.
+<<<<<<< HEAD
     openSnackbar () {
       this.$refs.snackbar.open()
+=======
+    minimize () {
+      ipcRenderer.send('minimize')
+    },
+    exit () {
+      ipcRenderer.sendSync('quit')
+>>>>>>> 974110598553b8617dce44d341fdb3f106398651
     },
     closeNavBar () {
       this.$refs.leftSidenav.toggle()
