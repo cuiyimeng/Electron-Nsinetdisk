@@ -59,7 +59,7 @@
 
       </md-app-drawer>
 
-      <md-app-content>
+      <md-app-content class="mainPage">
         <router-view>
         </router-view>
       </md-app-content>
@@ -126,7 +126,7 @@ export default {
 }
 @keyframes example {
   0% {
-    top: 300px;
+    top: 200px;
   }
   100% {
     top: 0px;
