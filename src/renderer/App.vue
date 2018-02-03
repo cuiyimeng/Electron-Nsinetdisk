@@ -1,7 +1,7 @@
 <template>
-  <div class="page-container">
+  <div>
 
-    <md-app md-waterfall md-mode="overlap" md-theme="md-card-name">
+    <md-app md-waterfall :md-mode="this.$store.state.FormStatus.appMode" md-theme="md-card-name">
       <md-app-toolbar class="md-primary md-large">
         <div class="md-toolbar-row">
           <md-button class="md-icon-button" @click="menuVisible = !menuVisible">
@@ -11,7 +11,6 @@
           <span class="md-title"> {{ $route.name }} </span>
 
           <div class="md-toolbar-section-end">
-
             <md-menu md-size="big" md-direction="bottom-end">
               <md-button class="md-icon-button" md-menu-trigger>
                 <md-icon>more_vert</md-icon>
@@ -27,13 +26,16 @@
                   <span>设置</span>
                   <md-icon>settings</md-icon>
                 </md-menu-item>
+
+                <md-menu-item>
+                  <span>退出账号</span>
+                  <md-icon>exit_to_app</md-icon>
+                </md-menu-item>
               </md-menu-content>
             </md-menu>
-
           </div>
 
         </div>
-
       </md-app-toolbar>
 
       <md-app-drawer :md-active.sync="menuVisible">
@@ -59,7 +61,7 @@
 
       </md-app-drawer>
 
-      <md-app-content class="mainPage">
+      <md-app-content>
         <router-view>
         </router-view>
       </md-app-content>
@@ -77,6 +79,7 @@ export default {
   watch: {
     '$route.path': function (params) {
       this.menuVisible = false
+      this.$store.dispatch('test')
     }
   }
 }
@@ -98,7 +101,8 @@ export default {
   max-width: calc(100vw - 125px);
 }
 .md-app-content {
-  min-height: 40vh;
+  height: auto;
+  min-height: 70vh;
 }
 // Theme Engine
 @import "~vue-material/dist/theme/engine";
@@ -118,7 +122,7 @@ export default {
   position: fixed;
   top: 0;
 }
-.mainPage {
+.md-app-content {
   position: relative;
   animation-name: example;
   animation-duration: 0.7s;
